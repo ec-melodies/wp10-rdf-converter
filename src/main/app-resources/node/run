@@ -3,11 +3,16 @@
 # source the ciop functions (e.g. ciop-log, ciop-getparam)
 source ${ciop_job_include}
 
+OUTPUT_DIR=$TMPDIR/output
+mkdir -p $OUTPUT_DIR
+
 # Loops over all the inputs
 while read inputfile 
 do
   # report activity in log
   ciop-log "INFO" "The input file is: $inputfile"
+  /usr/bin/mono /application/bin/VTKFile2RDF.exe $inputfile $OUTPUT_DIR/out2.nt /application/bin/vtktest2.xml
+  ciop-publish -m $OUTPUT_DIR/out2.nt 
 done
 
 exit 0
